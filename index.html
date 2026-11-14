@@ -1,93 +1,121 @@
 <!DOCTYPE html>
 <html lang="zh-TW" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phoenix | AI 應用架構與自動化開發者</title>
-  <meta name="description" content="Phoenix 的個人官方網站 - 專注於 AI Agent、MCP 工具鏈整合、全端開發與雲端工作流自動化。">
-  <!-- Tailwind CSS CDN -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phoenix 黃凱 | AI 應用規劃與自動化系統架構師</title>
+  <meta name="description" content="Phoenix（黃凱）的個人網站 — 專注於 AI Agent 架構、OpenRouter / MCP 工具鏈整合、Google Apps Script 自動化與無伺服器網頁開發。" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & Noto Sans TC -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
             sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
           },
-          colors: {
-            brand: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
+          animation: {
+            'float-slow': 'floatSlow 3.5s ease-in-out infinite',
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
             }
           }
         }
       }
-    }
+    };
   </script>
   <style>
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
+    body {
+      background-color: #070b14;
+      color: #e2e8f0;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .glass {
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.14);
     }
-    .glass-card:hover {
-      border-color: rgba(56, 189, 248, 0.4);
-      box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.3);
+    .glass-hover {
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
-    .gradient-text {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+    .glass-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 18px 38px -15px rgba(14, 165, 233, 0.28);
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 55%, #e879f9 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .gradient-bg {
-      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.18) 0%, rgba(15, 23, 42, 0) 65%);
-    }
-    /* Typing Dots Animation */
     .typing-dot {
-      animation: typingBounce 1.4s infinite ease-in-out both;
+      animation: typingPulse 1.4s infinite ease-in-out both;
     }
     .typing-dot:nth-child(1) { animation-delay: -0.32s; }
     .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes typingBounce {
-      0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+    @keyframes typingPulse {
+      0%, 80%, 100% { transform: scale(0.4); opacity: 0.35; }
       40% { transform: scale(1); opacity: 1; }
+    }
+    /* Custom subtle scrollbar inside chat */
+    #chatMessages::-webkit-scrollbar {
+      width: 5px;
+    }
+    #chatMessages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    #chatMessages::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.25);
+      border-radius: 9999px;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-sky-500 selection:text-white relative">
+<body class="font-sans antialiased selection:bg-sky-500 selection:text-white relative overflow-x-hidden">
 
-  <!-- Ambient Glow Background -->
-  <div class="fixed inset-0 gradient-bg pointer-events-none -z-10"></div>
+  <!-- Background Layers -->
+  <div class="fixed inset-0 grid-bg pointer-events-none -z-20"></div>
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-sky-500/15 blur-[130px] rounded-full pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-0 w-[520px] h-[420px] bg-indigo-600/15 blur-[130px] rounded-full pointer-events-none -z-10"></div>
 
-  <!-- Header / Navigation -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/70 border-b border-slate-800/80">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="#" class="flex items-center space-x-3 group">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/75 backdrop-blur-lg">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center space-x-3 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-extrabold shadow-lg shadow-sky-500/25 group-hover:scale-105 transition">
           P
         </div>
-        <span class="font-bold text-lg tracking-tight group-hover:text-sky-400 transition-colors">Phoenix<span class="text-sky-500">.dev</span></span>
+        <div class="leading-tight">
+          <span class="font-bold text-base tracking-tight text-white">Phoenix<span class="text-sky-400">.dev</span></span>
+          <span class="block text-[10px] text-slate-400 tracking-wider uppercase">AI & Automation</span>
+        </div>
       </a>
 
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
-        <a href="#about" class="hover:text-sky-400 transition-colors">關於我</a>
-        <a href="#skills" class="hover:text-sky-400 transition-colors">技術棧</a>
-        <a href="#projects" class="hover:text-sky-400 transition-colors">精選專案</a>
-        <a href="#contact" class="hover:text-sky-400 transition-colors">聯絡資訊</a>
+      <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-sky-400 transition">關於我</a>
+        <a href="#skills" class="hover:text-sky-400 transition">專業技能</a>
+        <a href="#projects" class="hover:text-sky-400 transition">精選作品</a>
+        <a href="#services" class="hover:text-sky-400 transition">合作服務</a>
+        <a href="#contact" class="hover:text-sky-400 transition">聯絡方式</a>
       </nav>
 
-      <div class="flex items-center space-x-3">
-        <a href="https://github.com/phoenix0268-debug" target="_blank" rel="noopener noreferrer" 
-           class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center space-x-1.5">
+      <div class="flex items-center space-x-2.5">
+        <button onclick="openChatWithSettings()" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-sky-300 border border-sky-500/30 transition">
+          <span>⚙️</span>
+          <span>客服設定</span>
+        </button>
+        <a href="https://github.com/phoenix0268-debug" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           <span>GitHub</span>
         </a>
@@ -95,78 +123,108 @@
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-12 md:py-20 space-y-24">
+  <main id="top" class="max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20 space-y-24">
 
     <!-- Hero Section -->
-    <section class="text-center space-y-6 pt-6">
-      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-sky-950/60 border border-sky-500/30 text-sky-400 text-xs font-medium">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="dynamicGreeting">探索未知，定義未來</span>
+    <section class="grid lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-sky-950/70 border border-sky-500/30 text-sky-300 text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="dynamicGreeting">歡迎來到我的個人空間 · 台北</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15]">
+          嗨，我是 <span class="text-gradient">Phoenix 黃凱</span><br />
+          打造會思考的自動化系統
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-300/90 leading-relaxed max-w-2xl">
+          身為 <span class="text-white font-semibold">AI 應用規劃師</span> 與 <span class="text-white font-semibold">自動化系統架構師</span>，我專注於把大型語言模型、MCP 工具協議與無伺服器雲端架構結合，將繁瑣的日常流程轉化為高效率、可落地的數位產品。
+        </p>
+
+        <div class="flex flex-wrap gap-3.5 pt-2">
+          <a href="#projects" class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 transition">
+            探索精選作品 →
+          </a>
+          <button onclick="toggleChat(true)" class="px-6 py-3 rounded-xl glass hover:border-sky-400/60 text-sky-300 font-semibold text-sm flex items-center space-x-2 transition">
+            <span>🤖</span>
+            <span>找右下角 AI 小客服聊聊</span>
+          </button>
+        </div>
       </div>
 
-      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
-        你好，我是 <span class="gradient-text">Phoenix</span>
-      </h1>
+      <!-- Profile Highlight Card -->
+      <div class="lg:col-span-5">
+        <div class="glass rounded-3xl p-6 sm:p-7 space-y-6 relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-36 h-36 bg-sky-500/20 rounded-full blur-2xl"></div>
+          <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-fuchsia-500 p-[2px] flex-shrink-0">
+              <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center text-2xl font-black text-gradient">
+                PK
+              </div>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-white">Phoenix (Kai Huang)</h2>
+              <p class="text-xs text-sky-400 font-medium">AI Solutions Architect · Taipei, TW</p>
+              <div class="mt-1.5 inline-flex items-center space-x-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Open to AI Consulting & Projects</span>
+              </div>
+            </div>
+          </div>
 
-      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-        AI 應用規劃師與自動化開發者。專注於 <span class="text-slate-200 font-medium">Agentic AI 工作流</span>、<span class="text-slate-200 font-medium">MCP 工具協議整合</span> 與高效率雲端系統建構。
-      </p>
-
-      <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
-        <a href="#projects" class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-0.5 transition-all">
-          探索精選專案
-        </a>
-        <button onclick="toggleChat()" class="px-6 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-sky-400 font-semibold border border-sky-500/30 hover:border-sky-500/60 transition-all flex items-center space-x-2">
-          <span>🤖 詢問 AI 客服</span>
-        </button>
-      </div>
-
-      <!-- Quick Metrics -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-10">
-        <div class="glass-card p-4 rounded-2xl text-center">
-          <div class="text-2xl font-bold text-sky-400">100%</div>
-          <div class="text-xs text-slate-400 mt-1">AI 協同開發</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl text-center">
-          <div class="text-2xl font-bold text-indigo-400">MCP</div>
-          <div class="text-xs text-slate-400 mt-1">協議生態深度應用</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl text-center">
-          <div class="text-2xl font-bold text-purple-400">Cloud</div>
-          <div class="text-xs text-slate-400 mt-1">現代無伺服器架構</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl text-center">
-          <div class="text-2xl font-bold text-emerald-400">Fast</div>
-          <div class="text-xs text-slate-400 mt-1">敏捷原型與快速落地</div>
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="bg-slate-900/75 border border-slate-800 rounded-2xl p-3.5">
+              <div class="text-xl font-extrabold text-sky-400">5+ 年</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">自動化與全端實戰</div>
+            </div>
+            <div class="bg-slate-900/75 border border-slate-800 rounded-2xl p-3.5">
+              <div class="text-xl font-extrabold text-indigo-400">20+</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">AI 工作流落地專案</div>
+            </div>
+            <div class="bg-slate-900/75 border border-slate-800 rounded-2xl p-3.5">
+              <div class="text-xl font-extrabold text-fuchsia-400">MCP</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Agent 工具鏈整合</div>
+            </div>
+            <div class="bg-slate-900/75 border border-slate-800 rounded-2xl p-3.5">
+              <div class="text-xl font-extrabold text-emerald-400">0 維運</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">GAS + Pages 雲端架構</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- About Me Section -->
+    <!-- About Section -->
     <section id="about" class="space-y-8 scroll-mt-24">
-      <div class="border-l-4 border-sky-500 pl-4">
-        <h2 class="text-2xl md:text-3xl font-bold">關於我 (About Me)</h2>
-        <p class="text-sm text-slate-400 mt-1">熱愛探索前沿技術與創造實際價值的使用者體驗</p>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-sky-400">About Me</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">關於我與設計理念</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-400">用簡潔可靠的工程架構，釋放 AI 的真實價值</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="glass-card p-8 rounded-3xl space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">將 AI 轉化為真實生產力</h3>
-          <p class="text-slate-400 leading-relaxed text-sm">
-            不僅僅是使用大語言模型聊天，而是將 AI 模型結合 Model Context Protocol (MCP)、API 與自動化工具，架構具備多步驟推理、主動執行任務的 Agent 系統，讓技術真正服務於業務場景。
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass glass-hover rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-400 flex items-center justify-center text-lg">🧠</div>
+          <h3 class="text-lg font-bold text-white">推論導向的 AI 設計</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            善用具備 Reasoning 推理能力的模型（如 Claude Haiku 5.5、Gemini 等），搭配結構化提示詞與多輪上下文記憶，確保回覆精準且具邏輯一致性。
           </p>
         </div>
-
-        <div class="glass-card p-8 rounded-3xl space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100">端到端全流程架構</h3>
-          <p class="text-slate-400 leading-relaxed text-sm">
-            從需求梳理、架構選型、Prompt Engineering、腳本編寫到雲端一鍵部屬，兼顧程式碼簡潔度與維護性，打造快速反覆運算且高度可靠的數位解決方案。
+        <div class="glass glass-hover rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center text-lg">⚡</div>
+          <h3 class="text-lg font-bold text-white">輕量化無伺服器架構</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            透過 GitHub Pages 託管靜態前端、Google Apps Script 擔任安全後端代理並把 API Key 藏在「指令碼屬性」中，免租主機即可快速上線。
+          </p>
+        </div>
+        <div class="glass glass-hover rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-400 flex items-center justify-center text-lg">🔗</div>
+          <h3 class="text-lg font-bold text-white">跨平台生態整合</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            熟悉 Google Workspace 自動化、GitHub 工作流與 MCP（Model Context Protocol），讓資料與工具在不同服務之間順暢流通。
           </p>
         </div>
       </div>
@@ -174,470 +232,642 @@
 
     <!-- Skills Section -->
     <section id="skills" class="space-y-8 scroll-mt-24">
-      <div class="border-l-4 border-indigo-500 pl-4">
-        <h2 class="text-2xl md:text-3xl font-bold">技能棧 (Skills & Technologies)</h2>
-        <p class="text-sm text-slate-400 mt-1">持續擴展的現代技術武器庫</p>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-indigo-400">Tech Stack</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">核心專業技能</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-400">從 AI 模型串接到前端互動體驗</p>
       </div>
 
-      <div class="grid sm:grid-cols-3 gap-6">
-        <!-- Skill 1 -->
-        <div class="glass-card p-6 rounded-2xl space-y-3">
-          <h3 class="font-bold text-sky-400 flex items-center space-x-2">
-            <span>🤖 AI & Agent 領域</span>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-3xl p-6 space-y-4">
+          <h3 class="font-bold text-sky-400 text-base flex items-center space-x-2">
+            <span>🤖</span><span>AI 與 Agent 應用</span>
           </h3>
-          <ul class="text-sm text-slate-400 space-y-2">
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span>Model Context Protocol (MCP)</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span>Gemini & Claude API 深度調用</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span>Agentic Workflows & Multi-turn Planning</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span>結構化輸出 (Structured Outputs)</span></li>
-          </ul>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full text-xs bg-sky-950/80 text-sky-300 border border-sky-500/25">OpenRouter API</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-sky-950/80 text-sky-300 border border-sky-500/25">Claude / Gemini API</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-sky-950/80 text-sky-300 border border-sky-500/25">Reasoning 推理保留</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-sky-950/80 text-sky-300 border border-sky-500/25">MCP 協議開發</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-sky-950/80 text-sky-300 border border-sky-500/25">Prompt 工程</span>
+          </div>
         </div>
 
-        <!-- Skill 2 -->
-        <div class="glass-card p-6 rounded-2xl space-y-3">
-          <h3 class="font-bold text-indigo-400 flex items-center space-x-2">
-            <span>⚙️ 自動化與工具鏈</span>
+        <div class="glass rounded-3xl p-6 space-y-4">
+          <h3 class="font-bold text-indigo-400 text-base flex items-center space-x-2">
+            <span>⚙️</span><span>雲端與自動化工具</span>
           </h3>
-          <ul class="text-sm text-slate-400 space-y-2">
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span><span>Google Apps Script (GAS)</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span><span>GitHub Actions & CI/CD</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span><span>PowerShell / Bash 自動化指令</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span><span>Docker & 容器化服務運行</span></li>
-          </ul>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/25">Google Apps Script</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/25">Google Workspace API</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/25">GitHub Pages / Actions</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/25">Python 自動化腳本</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/25">Netlify / Webhook</span>
+          </div>
         </div>
 
-        <!-- Skill 3 -->
-        <div class="glass-card p-6 rounded-2xl space-y-3">
-          <h3 class="font-bold text-purple-400 flex items-center space-x-2">
-            <span>💻 軟體工程與前端</span>
+        <div class="glass rounded-3xl p-6 space-y-4">
+          <h3 class="font-bold text-fuchsia-400 text-base flex items-center space-x-2">
+            <span>💻</span><span>前端與介面工程</span>
           </h3>
-          <ul class="text-sm text-slate-400 space-y-2">
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span><span>Python (自動化、腳本、資料處理)</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span><span>JavaScript / TypeScript / Node.js</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span><span>Tailwind CSS & 響應式切版</span></li>
-            <li class="flex items-center space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span><span>Netlify / Vercel / GitHub Pages 部屬</span></li>
-          </ul>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full text-xs bg-fuchsia-950/80 text-fuchsia-300 border border-fuchsia-500/25">HTML5 / CSS3</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-fuchsia-950/80 text-fuchsia-300 border border-fuchsia-500/25">Tailwind CSS</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-fuchsia-950/80 text-fuchsia-300 border border-fuchsia-500/25">Modern JavaScript</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-fuchsia-950/80 text-fuchsia-300 border border-fuchsia-500/25">RWD 響應式設計</span>
+            <span class="px-3 py-1 rounded-full text-xs bg-fuchsia-950/80 text-fuchsia-300 border border-fuchsia-500/25">RESTful API 串接</span>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Featured Projects Section -->
     <section id="projects" class="space-y-8 scroll-mt-24">
-      <div class="border-l-4 border-purple-500 pl-4">
-        <h2 class="text-2xl md:text-3xl font-bold">精選專案 (Featured Projects)</h2>
-        <p class="text-sm text-slate-400 mt-1">近期實作與開源實驗作品</p>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-fuchsia-400">Portfolio</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">精選代表作品</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-400">可點擊右下角機器人了解更多實作細節</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- Project 1 -->
-        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+        <article class="glass glass-hover rounded-3xl p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-3">
-            <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
-              01
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-lg bg-sky-500/15 text-sky-400 text-xs font-bold">Project 01</span>
+              <span class="text-[11px] text-slate-400">GitHub Pages + GAS</span>
             </div>
-            <h3 class="text-lg font-bold group-hover:text-sky-400 transition-colors">GitHub MCP Server 整合架構</h3>
-            <p class="text-slate-400 text-xs leading-relaxed">
-              透過 Model Context Protocol 直接控制 GitHub 原生 API，自動建立倉儲、管理 Commits、部署 GitHub Pages，達成完全無縫的自主開發體驗。
+            <h3 class="text-lg font-bold text-white">OpenRouter Reasoning 小客服系統</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              結合前端機器人客服介面與 Google Apps Script 安全代理，支援 <code class="text-sky-300">anthropic/claude-haiku-5.5</code> 推理模式並於多輪對話原封不動保留 <code class="text-sky-300">reasoning_details</code>。
             </p>
           </div>
-          <div class="pt-6">
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="px-2 py-0.5 rounded text-[11px] bg-sky-950 text-sky-400 border border-sky-800">MCP</span>
-              <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">GitHub API</span>
-              <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Automation</span>
-            </div>
-            <a href="https://github.com/phoenix0268-debug/phoenix0268-debug.github.io" target="_blank" class="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center space-x-1">
-              <span>查看原始碼</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
+          <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-emerald-400 font-medium">● 即時運行中</span>
+            <button onclick="askAboutProject('請詳細介紹 OpenRouter Reasoning 小客服系統的架構！')" class="text-sky-400 hover:text-sky-300 font-semibold">
+              問小客服 →
+            </button>
           </div>
-        </div>
+        </article>
 
-        <!-- Project 2 -->
-        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+        <article class="glass glass-hover rounded-3xl p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
-              02
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-lg bg-indigo-500/15 text-indigo-400 text-xs font-bold">Project 02</span>
+              <span class="text-[11px] text-slate-400">Workspace Automation</span>
             </div>
-            <h3 class="text-lg font-bold group-hover:text-indigo-400 transition-colors">雲端智慧打卡與出勤系統</h3>
-            <p class="text-slate-400 text-xs leading-relaxed">
-              結合 Google Workspace 雲端試算表與 Google Apps Script (GAS)，並透過 Netlify 部屬自適應 WebApp，支援照相存證與自動化出勤統計。
+            <h3 class="text-lg font-bold text-white">雲端智慧打卡與出勤管理平台</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              整合網頁端打卡介面、Google Apps Script WebApp 與 Google Sheets 資料庫，實現照片上傳歸檔、自動化統計與零主機維運成本。
             </p>
           </div>
-          <div class="pt-6">
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="px-2 py-0.5 rounded text-[11px] bg-indigo-950 text-indigo-400 border border-indigo-800">GAS</span>
-              <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Netlify</span>
-              <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Sheets API</span>
-            </div>
-            <span class="text-xs text-slate-500">內部私有專案</span>
+          <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-indigo-400 font-medium">● 自動化流程</span>
+            <button onclick="askAboutProject('可以介紹雲端智慧打卡系統嗎？')" class="text-sky-400 hover:text-sky-300 font-semibold">
+              問小客服 →
+            </button>
           </div>
-        </div>
+        </article>
 
-        <!-- Project 3 -->
-        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+        <article class="glass glass-hover rounded-3xl p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-3">
-            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">
-              03
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-lg bg-fuchsia-500/15 text-fuchsia-400 text-xs font-bold">Project 03</span>
+              <span class="text-[11px] text-slate-400">Agentic Workflow</span>
             </div>
-            <h3 class="text-lg font-bold group-hover:text-purple-400 transition-colors">個人專屬品牌網站</h3>
-            <p class="text-slate-400 text-xs leading-relaxed">
-              使用現代玻璃擬態 (Glassmorphism) 設計風格，極速載入且全裝置響應式支援，自動部屬至全球 CDN 節點。
+            <h3 class="text-lg font-bold text-white">MCP 跨平台開發工作流</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              利用 Model Context Protocol 讓 AI 助手直接讀寫開發環境、操作 GitHub 倉儲並自動完成頁面發佈，大幅縮短從靈感到上線的週期。
             </p>
           </div>
-          <div class="pt-6">
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="px-2 py-0.5 rounded text-[11px] bg-purple-950 text-purple-400 border border-purple-800">GitHub Pages</span>
-              <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300">Tailwind CSS</span>
-            </div>
-            <a href="https://phoenix0268-debug.github.io/" target="_blank" class="text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center space-x-1">
-              <span>線上即時體驗</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
+          <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-fuchsia-400 font-medium">● AI 工具鏈</span>
+            <button onclick="askAboutProject('Phoenix 如何運用 MCP 加速開發？')" class="text-sky-400 hover:text-sky-300 font-semibold">
+              問小客服 →
+            </button>
           </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Services & Experience Section -->
+    <section id="services" class="space-y-8 scroll-mt-24">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-emerald-400">Services</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">我能協助您的領域</h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-400">個人專案、企業內訓或流程顧問皆歡迎交流</p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 space-y-2 border-l-4 border-l-sky-500">
+          <div class="text-xs text-sky-400 font-semibold">01 / AI 導入顧問</div>
+          <h3 class="font-bold text-white">AI 工作流規劃與實作</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">評估業務痛點，設計合適的 LLM Prompt、工具呼叫與成本最佳化方案。</p>
+        </div>
+        <div class="glass rounded-2xl p-6 space-y-2 border-l-4 border-l-indigo-500">
+          <div class="text-xs text-indigo-400 font-semibold">02 / 智慧客服建置</div>
+          <h3 class="font-bold text-white">網站客製化 AI 機器人</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">為品牌官網或內部系統快速嵌入具備多輪推理記憶的專屬 AI 客服。</p>
+        </div>
+        <div class="glass rounded-2xl p-6 space-y-2 border-l-4 border-l-emerald-500">
+          <div class="text-xs text-emerald-400 font-semibold">03 / GAS 自動化</div>
+          <h3 class="font-bold text-white">Google Workspace 串接</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">整合試算表、Gmail、表單與外部 API，自動化完成每日報表與通知流程。</p>
         </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="glass-card p-8 md:p-12 rounded-3xl text-center space-y-6 scroll-mt-24">
-      <h2 class="text-3xl font-extrabold tracking-tight">準備好開始交流了嗎？</h2>
-      <p class="text-slate-400 max-w-lg mx-auto text-sm leading-relaxed">
-        無論是想探討 AI 應用架構、工作流自動化方案，或是交流技術心得，都歡迎隨時聯繫！
-      </p>
-
-      <div class="flex flex-wrap justify-center gap-4 pt-2">
-        <a href="https://github.com/phoenix0268-debug" target="_blank" rel="noopener noreferrer" 
-           class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold border border-slate-700 transition flex items-center space-x-2">
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>關注我的 GitHub</span>
-        </a>
-        <button onclick="toggleChat()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-sky-500/20 transition flex items-center space-x-2">
-          <span>🤖 立即諮詢 AI 助理</span>
-        </button>
+    <section id="contact" class="scroll-mt-24">
+      <div class="glass rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-fuchsia-500/10 pointer-events-none"></div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white relative">想討論 AI 專案或自動化方案？</h2>
+        <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto relative">
+          歡迎透過 Email 或 GitHub 與我聯繫，也可以先點開右下角的小機器人客服，隨時問它任何關於我的問題！
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 relative">
+          <a href="mailto:phoenix0268@gmail.com" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-sky-500/20">
+            ✉️ phoenix0268@gmail.com
+          </a>
+          <a href="https://github.com/phoenix0268-debug" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition">
+            GitHub: phoenix0268-debug
+          </a>
+        </div>
       </div>
     </section>
+
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-900 bg-slate-950 py-8 text-center text-xs text-slate-500">
-    <div class="max-w-6xl mx-auto px-6 space-y-2">
-      <p>© 2026 Phoenix. Built with Antigravity AI & deployed via GitHub MCP Server.</p>
-      <p class="text-slate-600">Continuous innovation powered by LLM Agents.</p>
-    </div>
+  <footer class="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
+    <p>© 2026 Phoenix (Kai Huang). Built with Tailwind CSS · Hosted on GitHub Pages · AI Chatbot Powered by GAS &amp; OpenRouter.</p>
   </footer>
 
-  <!-- ======================================================== -->
-  <!-- 🤖 AI 智能客服小機器人 Widget (右下角懸浮按鈕 & 展開視窗) -->
-  <!-- ======================================================== -->
-  <div id="aiChatWidget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    
-    <!-- 懸浮啟動按鈕 (FAB) -->
-    <div class="relative group">
-      <!-- 提示氣泡 (第一次訪問時吸引眼球) -->
-      <div id="chatBubbleTip" class="absolute -top-12 right-0 bg-slate-900 border border-sky-500/40 text-slate-200 text-xs px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap flex items-center space-x-1.5 transition-all duration-300 opacity-90 group-hover:opacity-100">
-        <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
-        <span>嗨！有問題可以問我喔 🤖</span>
-      </div>
+  <!-- ======================================================================= -->
+  <!-- 右下角機器人 AI 小客服 Widget                                           -->
+  <!-- ======================================================================= -->
+  <div id="chatbotContainer" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
 
-      <button id="chatToggleBtn" onclick="toggleChat()" aria-label="打開 AI 客服"
-              class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-purple-600 p-2 text-white shadow-2xl shadow-sky-500/40 hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-sky-300/40 flex items-center justify-center">
-        <!-- 程式自製小機器人向量大頭 (SVG Avatar) -->
-        <svg class="w-full h-full drop-shadow-md" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="fabBotGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#dbeafe"/>
-            </linearGradient>
-            <linearGradient id="fabScreenGrad" x1="0" y1="0" x2="0" y2="30" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#090d16"/>
-              <stop offset="100%" stop-color="#1e293b"/>
-            </linearGradient>
-          </defs>
-          <!-- 天線 -->
-          <line x1="32" y1="17" x2="32" y2="8" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="32" cy="7" r="4" fill="#38bdf8"/>
-          <circle cx="32" cy="7" r="2" fill="#ffffff"/>
-          <!-- 耳機螺栓 -->
-          <rect x="7" y="27" width="5" height="15" rx="2.5" fill="#bae6fd"/>
-          <rect x="52" y="27" width="5" height="15" rx="2.5" fill="#bae6fd"/>
-          <!-- 機器人頭部 -->
-          <rect x="12" y="17" width="40" height="35" rx="12" fill="url(#fabBotGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-          <!-- 面罩螢幕 -->
-          <rect x="16" y="22" width="32" height="25" rx="8" fill="url(#fabScreenGrad)"/>
-          <!-- 雙眼 -->
-          <ellipse cx="24" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-          <ellipse cx="40" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-          <circle cx="25" cy="32" r="1.2" fill="#ffffff"/>
-          <circle cx="41" cy="32" r="1.2" fill="#ffffff"/>
-          <!-- 臉頰腮紅 -->
-          <circle cx="20" cy="40" r="1.5" fill="#f43f5e" opacity="0.8"/>
-          <circle cx="44" cy="40" r="1.5" fill="#f43f5e" opacity="0.8"/>
-          <!-- 微笑弧線 -->
-          <path d="M 28 39 Q 32 43 36 39" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-    </div>
+    <!-- 對話視窗 -->
+    <div id="chatWindow" class="hidden mb-3 w-[355px] sm:w-[395px] h-[540px] max-h-[80vh] rounded-3xl glass border border-sky-500/35 shadow-2xl shadow-sky-950/70 flex flex-col overflow-hidden">
 
-    <!-- 展開的對話視窗 -->
-    <div id="chatWindow" class="hidden w-[92vw] sm:w-[380px] h-[540px] max-h-[85vh] bg-slate-900/95 backdrop-blur-2xl border border-sky-500/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 mb-4">
-      
-      <!-- 視窗標題列 -->
-      <div class="px-5 py-4 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950/80 border-b border-slate-800 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <!-- 小機器人大頭頭像 -->
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 p-1 flex items-center justify-center border border-sky-400/30 shadow-md">
-            <svg class="w-full h-full" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="32" y1="17" x2="32" y2="8" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="32" cy="7" r="4" fill="#38bdf8"/>
-              <circle cx="32" cy="7" r="2" fill="#ffffff"/>
-              <rect x="7" y="27" width="5" height="15" rx="2.5" fill="#bae6fd"/>
-              <rect x="52" y="27" width="5" height="15" rx="2.5" fill="#bae6fd"/>
-              <rect x="12" y="17" width="40" height="35" rx="12" fill="#f8fafc" stroke="#38bdf8" stroke-width="1.5"/>
-              <rect x="16" y="22" width="32" height="25" rx="8" fill="#0f172a"/>
-              <ellipse cx="24" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-              <ellipse cx="40" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-              <circle cx="25" cy="32" r="1.2" fill="#ffffff"/>
-              <circle cx="41" cy="32" r="1.2" fill="#ffffff"/>
-              <path d="M 28 39 Q 32 43 36 39" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <!-- 視窗頂部列 -->
+      <div class="px-4 py-3 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <!-- 迷你機器人頭像 -->
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500/20 to-indigo-600/30 border border-sky-400/40 p-1 flex items-center justify-center flex-shrink-0">
+            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none">
+              <line x1="32" y1="7" x2="32" y2="16" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="32" cy="6" r="3.5" fill="#38bdf8"/>
+              <rect x="12" y="16" width="40" height="36" rx="12" fill="#e0f2fe"/>
+              <rect x="17" y="22" width="30" height="24" rx="8" fill="#0f172a"/>
+              <circle cx="25" cy="32" r="3.2" fill="#38bdf8"/>
+              <circle cx="39" cy="32" r="3.2" fill="#38bdf8"/>
+              <path d="M27 39 Q32 43 37 39" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
-            <div class="font-bold text-sm text-slate-100 flex items-center space-x-1.5">
-              <span>Phoenix AI 助理</span>
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-sm font-bold text-white">AI 機器人小客服</span>
+              <span id="connectionDot" class="w-2 h-2 rounded-full bg-amber-400" title="尚未設定 GAS 網址"></span>
             </div>
-            <div class="text-[11px] text-sky-400/90 font-medium">Powered by OpenRouter Claude</div>
+            <p id="connectionLabel" class="text-[11px] text-slate-400">Claude Haiku 5.5 · 請先設定 GAS 網址</p>
           </div>
         </div>
 
         <div class="flex items-center space-x-1">
-          <!-- 設定按鈕 (方便設定/更換 GAS 網址) -->
-          <button onclick="toggleSettingsModal()" title="設定 GAS 網址" class="p-1.5 rounded-lg text-slate-400 hover:text-sky-400 hover:bg-slate-800 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <!-- 設定紐 (填入 GAS 網址) -->
+          <button onclick="toggleSettingsPanel()" id="settingsBtn" title="設定 GAS 網址"
+                  class="px-2 py-1.5 rounded-lg text-xs font-medium text-sky-300 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 flex items-center space-x-1 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>設定</span>
           </button>
-          <!-- 關閉按鈕 -->
-          <button onclick="toggleChat()" title="收起視窗" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <!-- 清除對話 -->
+          <button onclick="clearChat()" title="清除對話紀錄"
+                  class="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          </button>
+          <!-- 收起視窗 -->
+          <button onclick="toggleChat(false)" title="收起視窗"
+                  class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
           </button>
         </div>
       </div>
 
-      <!-- 設定區塊 (點擊齒輪展開) -->
-      <div id="gasSettingsPanel" class="hidden px-4 py-3 bg-slate-950/90 border-b border-sky-500/20 text-xs space-y-2">
-        <div class="text-slate-300 font-semibold flex items-center justify-between">
-          <span>⚙️ Google Apps Script (GAS) WebApp 網址設定</span>
-          <span class="text-[10px] text-sky-400">儲存於瀏覽器</span>
+      <!-- 設定抽屜面板 (填入 GAS 產生的網址) -->
+      <div id="settingsPanel" class="hidden bg-slate-950/95 border-b border-sky-500/30 p-4 space-y-3 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-sky-300">⚙️ Google Apps Script (GAS) 網址設定</span>
+          <span class="text-[10px] text-slate-400">僅儲存於本機瀏覽器</span>
         </div>
-        <input type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec"
-               class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 text-xs focus:border-sky-500 focus:outline-none"/>
-        <div class="flex justify-end space-x-2">
-          <button onclick="saveGasUrl()" class="px-3 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-medium">儲存網址</button>
+
+        <div class="space-y-1.5">
+          <label for="gasUrlInput" class="block text-[11px] text-slate-400">
+            請貼上 GAS 部署產生的 Web App 網址（<code class="text-sky-300">/exec</code> 結尾）：
+          </label>
+          <input type="url" id="gasUrlInput"
+                 placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                 class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-sky-400" />
         </div>
+
+        <div id="settingsStatusMsg" class="hidden text-[11px] px-2.5 py-1.5 rounded-lg"></div>
+
+        <div class="flex items-center justify-between gap-2">
+          <button type="button" onclick="clearGasUrl()"
+                  class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            清除
+          </button>
+          <div class="flex items-center space-x-2">
+            <button type="button" onclick="testGasConnection()"
+                    class="px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white font-medium transition">
+              測試連線
+            </button>
+            <button type="button" onclick="saveGasUrl()"
+                    class="px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold transition">
+              儲存設定
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[10px] text-slate-500 leading-relaxed">
+          💡 提醒：GAS 需部署為「網頁應用程式」且存取權設為「所有人 (Anyone)」，並於「指令碼屬性」設定 <code class="text-slate-300">OPENROUTER_API_KEY</code>。
+        </p>
       </div>
 
-      <!-- 對話歷史容器 (可捲動) -->
-      <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs leading-relaxed">
-        <!-- 機器人歡迎語 -->
+      <!-- 對話訊息區 -->
+      <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs leading-relaxed bg-slate-950/40">
+        <!-- 歡迎訊息 -->
         <div class="flex items-start space-x-2.5">
-          <div class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-sky-400/40 p-0.5 flex-shrink-0 flex items-center justify-center">
-            <svg class="w-full h-full" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="7" r="4" fill="#38bdf8"/>
-              <rect x="12" y="17" width="40" height="35" rx="12" fill="#bae6fd"/>
-              <rect x="16" y="22" width="32" height="25" rx="8" fill="#0f172a"/>
-              <ellipse cx="24" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-              <ellipse cx="40" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
+          <div class="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 p-0.5 flex-shrink-0 flex items-center justify-center">
+            <svg viewBox="0 0 64 64" class="w-full h-full" fill="none">
+              <circle cx="32" cy="7" r="3.5" fill="#38bdf8"/>
+              <rect x="12" y="16" width="40" height="36" rx="12" fill="#e0f2fe"/>
+              <rect x="17" y="22" width="30" height="24" rx="8" fill="#0f172a"/>
+              <circle cx="25" cy="32" r="3.2" fill="#38bdf8"/>
+              <circle cx="39" cy="32" r="3.2" fill="#38bdf8"/>
             </svg>
           </div>
-          <div class="bg-slate-800/80 border border-slate-700/70 p-3 rounded-2xl rounded-tl-none text-slate-200 max-w-[85%] shadow">
-            你好！我是 Phoenix 的專屬 AI 虛擬助手 🤖<br><br>
-            有任何想了解 Phoenix 的技術特長、精選專案、或是 AI Agent 實戰經驗，都歡迎直接問我！
+          <div class="bg-slate-800/85 border border-slate-700/70 px-3.5 py-2.5 rounded-2xl rounded-tl-none text-slate-200 max-w-[85%]">
+            哈囉！我是 Phoenix 的 AI 機器人小客服 🤖<br /><br />
+            你可以問我關於 Phoenix 的技術背景、精選作品或合作方式。<br />
+            <span class="text-sky-300">首次使用請先點擊上方「⚙️ 設定」填入你的 GAS 網址！</span>
           </div>
         </div>
 
-        <!-- 建議快捷問題 -->
-        <div id="quickQuestions" class="flex flex-wrap gap-1.5 pt-1 pl-9">
-          <button onclick="sendQuickPrompt('Phoenix 擅長哪些核心技術？')" class="px-2.5 py-1 rounded-full bg-sky-950/70 hover:bg-sky-900/80 text-sky-300 border border-sky-500/30 text-[11px] transition">
-            💡 Phoenix 擅長什麼？
+        <!-- 快捷提問 Chips -->
+        <div id="quickChips" class="flex flex-wrap gap-1.5 pl-9">
+          <button onclick="sendQuickPrompt('Phoenix 擅長哪些 AI 與自動化技術？')" class="px-2.5 py-1 rounded-full bg-sky-950/70 hover:bg-sky-900/80 text-sky-300 border border-sky-500/30 text-[11px] transition">
+            💡 擅長技術？
           </button>
-          <button onclick="sendQuickPrompt('能介紹一下打卡系統專案嗎？')" class="px-2.5 py-1 rounded-full bg-indigo-950/70 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-500/30 text-[11px] transition">
-            ⏰ 雲端打卡專案介紹
+          <button onclick="sendQuickPrompt('請介紹一下你的精選作品！')" class="px-2.5 py-1 rounded-full bg-indigo-950/70 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-500/30 text-[11px] transition">
+            🚀 精選作品
           </button>
-          <button onclick="sendQuickPrompt('如何與 Phoenix 聯繫？')" class="px-2.5 py-1 rounded-full bg-purple-950/70 hover:bg-purple-900/80 text-purple-300 border border-purple-500/30 text-[11px] transition">
-            📫 如何取得聯繫？
+          <button onclick="sendQuickPrompt('如何與 Phoenix 聯繫合作？')" class="px-2.5 py-1 rounded-full bg-fuchsia-950/70 hover:bg-fuchsia-900/80 text-fuchsia-300 border border-fuchsia-500/30 text-[11px] transition">
+            ✉️ 聯絡方式
           </button>
         </div>
       </div>
 
-      <!-- 打字中動畫提示 -->
-      <div id="typingIndicator" class="hidden px-5 py-2 flex items-center space-x-1.5 text-xs text-sky-400">
-        <span class="text-[11px]">小機器人思考中</span>
-        <span class="w-1.5 h-1.5 bg-sky-400 rounded-full typing-dot"></span>
-        <span class="w-1.5 h-1.5 bg-sky-400 rounded-full typing-dot"></span>
-        <span class="w-1.5 h-1.5 bg-sky-400 rounded-full typing-dot"></span>
+      <!-- 思考中提示 -->
+      <div id="typingIndicator" class="hidden px-4 py-2 bg-slate-950/60 border-t border-slate-800/50 flex items-center space-x-2 text-[11px] text-sky-300">
+        <span>🤖 機器人推理思考中</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 typing-dot"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 typing-dot"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 typing-dot"></span>
       </div>
 
-      <!-- 底部輸入區域 -->
-      <div class="p-3 bg-slate-950/90 border-t border-slate-800/80">
-        <form onsubmit="handleChatSubmit(event)" class="flex items-center space-x-2">
-          <input type="text" id="chatInput" placeholder="輸入您的問題..." autocomplete="off"
-                 class="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500 transition"/>
-          <button type="submit" id="sendBtn"
-                  class="w-9 h-9 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white flex items-center justify-center shadow-lg shadow-sky-500/20 transition flex-shrink-0">
-            <svg class="w-4 h-4 fill-current transform rotate-90" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          </button>
-        </form>
+      <!-- 輸入表單 -->
+      <form onsubmit="handleChatSubmit(event)" class="p-3 bg-slate-900/95 border-t border-slate-800 flex items-center space-x-2">
+        <input type="text" id="chatInput" placeholder="輸入問題與小客服對話..." autocomplete="off"
+               class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400 transition" />
+        <button type="submit" id="sendBtn"
+                class="w-9 h-9 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white flex items-center justify-center shadow-lg shadow-sky-500/20 flex-shrink-0 transition">
+          <svg class="w-4 h-4 fill-current rotate-90" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- 右下角機器人浮動按鈕 + 提示氣泡 -->
+    <div class="flex items-center space-x-3">
+      <div id="botTipBubble" onclick="toggleChat(true)"
+           class="cursor-pointer hidden sm:flex items-center space-x-2 px-3.5 py-2 rounded-2xl glass border border-sky-500/35 text-xs text-slate-200 shadow-lg hover:border-sky-400 transition">
+        <span>👋 有問題嗎？點我問 AI 小客服</span>
       </div>
+
+      <button id="botFab" onclick="toggleChat()" aria-label="開啟 AI 機器人小客服"
+              class="animate-float-slow relative w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 border-2 border-sky-400/60 shadow-2xl shadow-sky-500/30 hover:scale-105 hover:border-sky-300 transition flex items-center justify-center group">
+        <!-- 狀態指示燈 -->
+        <span id="fabStatusDot" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 border-2 border-slate-950"></span>
+
+        <!-- 可愛機器人 SVG 圖示 -->
+        <svg viewBox="0 0 64 64" class="w-11 h-11 drop-shadow" fill="none">
+          <!-- 天線 -->
+          <line x1="32" y1="6" x2="32" y2="15" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="32" cy="5.5" r="4" fill="#38bdf8" class="group-hover:fill-emerald-400 transition-colors"/>
+          <!-- 耳朵 -->
+          <rect x="6" y="27" width="6" height="14" rx="3" fill="#38bdf8"/>
+          <rect x="52" y="27" width="6" height="14" rx="3" fill="#38bdf8"/>
+          <!-- 頭部外殼 -->
+          <rect x="12" y="15" width="40" height="36" rx="12" fill="#e0f2fe"/>
+          <!-- 螢幕臉部 -->
+          <rect x="17" y="21" width="30" height="24" rx="8" fill="#0f172a"/>
+          <!-- 發光眼睛 -->
+          <ellipse cx="25" cy="31" rx="3.4" ry="4" fill="#38bdf8"/>
+          <ellipse cx="39" cy="31" rx="3.4" ry="4" fill="#38bdf8"/>
+          <circle cx="26" cy="29.5" r="1.1" fill="#ffffff"/>
+          <circle cx="40" cy="29.5" r="1.1" fill="#ffffff"/>
+          <!-- 微笑嘴巴 -->
+          <path d="M26 39 Q32 43.5 38 39" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 
   <script>
-    // ========================================================
-    // 1. 動態時間問候
-    // ========================================================
-    const hour = new Date().getHours();
-    const greetingEl = document.getElementById('dynamicGreeting');
-    if (hour >= 5 && hour < 12) {
-      greetingEl.innerText = '早安！開啟充實的一天 · 探索未知';
-    } else if (hour >= 12 && hour < 18) {
-      greetingEl.innerText = '午安！靈感與生產力交會時分 · 探索未知';
-    } else {
-      greetingEl.innerText = '晚安！深夜專注於技術沉澱 · 探索未知';
-    }
+    // =========================================================================
+    // 1. 動態問候語
+    // =========================================================================
+    (function initGreeting() {
+      const hour = new Date().getHours();
+      const el = document.getElementById('dynamicGreeting');
+      if (hour >= 5 && hour < 12) {
+        el.textContent = '早安！祝你有充滿靈感的一天 · 台北';
+      } else if (hour >= 12 && hour < 18) {
+        el.textContent = '午安！歡迎探索 AI 與自動化作品 · 台北';
+      } else {
+        el.textContent = '晚安！用技術打造更聰明的工作流 · 台北';
+      }
+    })();
 
-    // ========================================================
-    // 2. AI 智能客服小機器人前端邏輯
-    // ========================================================
-    // 預設的 GAS 網址常數 (若使用者尚未在下方填入，將優先讀取 localStorage 或提示使用者設定)
-    const DEFAULT_GAS_URL = ""; 
-
+    // =========================================================================
+    // 2. AI 機器人小客服前端控制邏輯 (支援 GAS 網址設定 & reasoning_details 保留)
+    // =========================================================================
+    const GAS_URL_STORAGE_KEY = 'phoenix_gas_webapp_url';
     let chatHistory = [];
-    let isWaitingForResponse = false;
+    let isSending = false;
 
-    function getActiveGasUrl() {
-      return localStorage.getItem('phoenix_gas_url') || DEFAULT_GAS_URL;
+    function getGasUrl() {
+      return (localStorage.getItem(GAS_URL_STORAGE_KEY) || '').trim();
     }
 
-    function toggleChat() {
-      const windowEl = document.getElementById('chatWindow');
-      const tipEl = document.getElementById('chatBubbleTip');
-      const isHidden = windowEl.classList.contains('hidden');
-      
-      if (isHidden) {
-        windowEl.classList.remove('hidden');
-        tipEl.classList.add('hidden');
+    function updateConnectionUI() {
+      const url = getGasUrl();
+      const dot = document.getElementById('connectionDot');
+      const fabDot = document.getElementById('fabStatusDot');
+      const label = document.getElementById('connectionLabel');
+
+      if (url) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        dot.title = '已設定 GAS 網址';
+        fabDot.className = 'absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-950';
+        label.textContent = 'Claude Haiku 5.5 · 已設定 GAS 連線';
+        label.className = 'text-[11px] text-emerald-400';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        dot.title = '尚未設定 GAS 網址';
+        fabDot.className = 'absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 border-2 border-slate-950';
+        label.textContent = 'Claude Haiku 5.5 · 請先點設定填入網址';
+        label.className = 'text-[11px] text-amber-400';
+      }
+    }
+
+    function toggleChat(forceState) {
+      const win = document.getElementById('chatWindow');
+      const tip = document.getElementById('botTipBubble');
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : win.classList.contains('hidden');
+
+      if (shouldOpen) {
+        win.classList.remove('hidden');
+        if (tip) tip.classList.add('hidden');
         document.getElementById('chatInput').focus();
         scrollToBottom();
       } else {
-        windowEl.classList.add('hidden');
+        win.classList.add('hidden');
       }
     }
 
-    function toggleSettingsModal() {
-      const panel = document.getElementById('gasSettingsPanel');
+    function openChatWithSettings() {
+      toggleChat(true);
+      const panel = document.getElementById('settingsPanel');
+      panel.classList.remove('hidden');
+      document.getElementById('gasUrlInput').value = getGasUrl();
+      document.getElementById('gasUrlInput').focus();
+    }
+
+    function toggleSettingsPanel() {
+      const panel = document.getElementById('settingsPanel');
+      const isOpening = panel.classList.contains('hidden');
       panel.classList.toggle('hidden');
-      if (!panel.classList.contains('hidden')) {
-        document.getElementById('gasUrlInput').value = getActiveGasUrl();
+      if (isOpening) {
+        document.getElementById('gasUrlInput').value = getGasUrl();
+        hideSettingsStatus();
       }
+    }
+
+    function showSettingsStatus(message, type) {
+      const el = document.getElementById('settingsStatusMsg');
+      el.classList.remove('hidden', 'bg-emerald-500/15', 'text-emerald-300', 'bg-rose-500/15', 'text-rose-300', 'bg-amber-500/15', 'text-amber-300');
+      if (type === 'success') {
+        el.classList.add('bg-emerald-500/15', 'text-emerald-300');
+      } else if (type === 'warning') {
+        el.classList.add('bg-amber-500/15', 'text-amber-300');
+      } else {
+        el.classList.add('bg-rose-500/15', 'text-rose-300');
+      }
+      el.textContent = message;
+    }
+
+    function hideSettingsStatus() {
+      document.getElementById('settingsStatusMsg').classList.add('hidden');
     }
 
     function saveGasUrl() {
-      const val = document.getElementById('gasUrlInput').value.trim();
-      if (val) {
-        localStorage.setItem('phoenix_gas_url', val);
-        alert('✅ Google Apps Script 網址已儲存！');
-        document.getElementById('gasSettingsPanel').classList.add('hidden');
-      } else {
-        localStorage.removeItem('phoenix_gas_url');
-        alert('已清除 GAS 網址設定');
+      const input = document.getElementById('gasUrlInput');
+      const url = input.value.trim();
+
+      if (!url) {
+        showSettingsStatus('❌ 請先輸入有效的 Google Apps Script 網址。', 'error');
+        return;
       }
+
+      if (!url.startsWith('https://script.google.com/')) {
+        showSettingsStatus('⚠️ 網址格式看起來不像 GAS WebApp（通常以 https://script.google.com/macros/s/.../exec 開頭），仍已為您儲存。', 'warning');
+      } else {
+        showSettingsStatus('✅ GAS 網址已儲存！現在可以開始對話了。', 'success');
+      }
+
+      localStorage.setItem(GAS_URL_STORAGE_KEY, url);
+      updateConnectionUI();
+    }
+
+    function clearGasUrl() {
+      localStorage.removeItem(GAS_URL_STORAGE_KEY);
+      document.getElementById('gasUrlInput').value = '';
+      showSettingsStatus('已清除本機儲存的 GAS 網址。', 'warning');
+      updateConnectionUI();
+    }
+
+    async function testGasConnection() {
+      const url = document.getElementById('gasUrlInput').value.trim() || getGasUrl();
+      if (!url) {
+        showSettingsStatus('❌ 請先貼上 GAS 網址再進行測試。', 'error');
+        return;
+      }
+
+      showSettingsStatus('⏳ 正在測試 GAS 連線...', 'warning');
+      try {
+        const res = await fetch(url, { method: 'GET', redirect: 'follow' });
+        const data = await res.json();
+        if (data && data.status === 'ok') {
+          if (data.hasApiKey) {
+            showSettingsStatus('✅ 連線成功！GAS 已就緒且已讀取到 OPENROUTER_API_KEY。', 'success');
+          } else {
+            showSettingsStatus('⚠️ GAS 已連通，但尚未在「指令碼屬性」設定 OPENROUTER_API_KEY。', 'warning');
+          }
+        } else {
+          showSettingsStatus('⚠️ 有收到回應，但格式非預期：' + JSON.stringify(data), 'warning');
+        }
+      } catch (err) {
+        showSettingsStatus('❌ 連線失敗：' + err.message + '（請確認 GAS 部署權限為「所有人」）', 'error');
+      }
+    }
+
+    function clearChat() {
+      chatHistory = [];
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = '';
+      appendBotMessage('對話已清除 ✨ 有什麼我可以幫您的嗎？');
     }
 
     function scrollToBottom() {
-      const msgBox = document.getElementById('chatMessages');
-      msgBox.scrollTop = msgBox.scrollHeight;
+      const box = document.getElementById('chatMessages');
+      box.scrollTop = box.scrollHeight;
     }
 
-    function appendMessage(sender, text) {
-      const msgBox = document.getElementById('chatMessages');
-      const wrap = document.createElement('div');
-      wrap.className = 'flex items-start space-x-2.5';
-
-      if (sender === 'user') {
-        wrap.className = 'flex items-start justify-end space-x-2.5';
-        wrap.innerHTML = `
-          <div class="bg-gradient-to-r from-sky-600 to-indigo-600 p-3 rounded-2xl rounded-tr-none text-white max-w-[85%] shadow">
-            ${escapeHtml(text)}
-          </div>
-        `;
-      } else {
-        wrap.innerHTML = `
-          <div class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-sky-400/40 p-0.5 flex-shrink-0 flex items-center justify-center">
-            <svg class="w-full h-full" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="7" r="4" fill="#38bdf8"/>
-              <rect x="12" y="17" width="40" height="35" rx="12" fill="#bae6fd"/>
-              <rect x="16" y="22" width="32" height="25" rx="8" fill="#0f172a"/>
-              <ellipse cx="24" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-              <ellipse cx="40" cy="33" rx="3.5" ry="4" fill="#38bdf8"/>
-            </svg>
-          </div>
-          <div class="bg-slate-800/80 border border-slate-700/70 p-3 rounded-2xl rounded-tl-none text-slate-200 max-w-[85%] shadow whitespace-pre-wrap leading-relaxed">
-            ${formatBotReply(text)}
-          </div>
-        `;
-      }
-      msgBox.appendChild(wrap);
-      scrollToBottom();
-    }
-
-    function escapeHtml(string) {
+    function escapeHtml(str) {
       const div = document.createElement('div');
-      div.innerText = string;
+      div.textContent = str;
       return div.innerHTML;
     }
 
-    function formatBotReply(text) {
-      // 轉換超連結為可點擊標籤
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      const safe = escapeHtml(text);
-      return safe.replace(urlRegex, function(url) {
-        return `<a href="${url}" target="_blank" class="text-sky-400 underline hover:text-sky-300">${url}</a>`;
+    function formatTextWithLinks(str) {
+      const escaped = escapeHtml(str);
+      return escaped.replace(/(https?:\/\/[^\s<]+)/g, function(url) {
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline hover:text-sky-300 break-all">' + url + '</a>';
       });
     }
 
-    function sendQuickPrompt(promptText) {
-      document.getElementById('chatInput').value = promptText;
+    function extractReasoningPreview(reasoningDetails) {
+      if (!reasoningDetails) return '';
+      if (typeof reasoningDetails === 'string') return reasoningDetails.trim();
+      if (Array.isArray(reasoningDetails)) {
+        return reasoningDetails
+          .map(function(item) {
+            if (!item) return '';
+            if (typeof item === 'string') return item;
+            return item.text || item.summary || item.content || '';
+          })
+          .filter(Boolean)
+          .join('\n')
+          .trim();
+      }
+      if (typeof reasoningDetails === 'object') {
+        return (reasoningDetails.text || reasoningDetails.summary || reasoningDetails.content || '').trim();
+      }
+      return '';
+    }
+
+    function appendUserMessage(text) {
+      const box = document.getElementById('chatMessages');
+      const row = document.createElement('div');
+      row.className = 'flex justify-end';
+      row.innerHTML = `
+        <div class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white px-3.5 py-2.5 rounded-2xl rounded-tr-none max-w-[85%] shadow whitespace-pre-wrap break-words">${escapeHtml(text)}</div>
+      `;
+      box.appendChild(row);
+      scrollToBottom();
+    }
+
+    function appendBotMessage(text, reasoningDetails) {
+      const box = document.getElementById('chatMessages');
+      const row = document.createElement('div');
+      row.className = 'flex items-start space-x-2.5';
+
+      const reasoningText = extractReasoningPreview(reasoningDetails);
+      const reasoningHtml = reasoningText
+        ? `<details class="mb-2 rounded-xl bg-slate-900/80 border border-slate-700/80 px-2.5 py-1.5 text-[11px] text-slate-400">
+             <summary class="cursor-pointer text-sky-300/90 font-medium select-none">🧠 模型推理過程 (Reasoning)</summary>
+             <div class="mt-1.5 whitespace-pre-wrap break-words text-slate-400 border-t border-slate-800 pt-1.5">${escapeHtml(reasoningText)}</div>
+           </details>`
+        : '';
+
+      row.innerHTML = `
+        <div class="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-400/30 p-0.5 flex-shrink-0 flex items-center justify-center">
+          <svg viewBox="0 0 64 64" class="w-full h-full" fill="none">
+            <circle cx="32" cy="7" r="3.5" fill="#38bdf8"/>
+            <rect x="12" y="16" width="40" height="36" rx="12" fill="#e0f2fe"/>
+            <rect x="17" y="22" width="30" height="24" rx="8" fill="#0f172a"/>
+            <circle cx="25" cy="32" r="3.2" fill="#38bdf8"/>
+            <circle cx="39" cy="32" r="3.2" fill="#38bdf8"/>
+          </svg>
+        </div>
+        <div class="bg-slate-800/85 border border-slate-700/70 px-3.5 py-2.5 rounded-2xl rounded-tl-none text-slate-200 max-w-[85%] shadow break-words">
+          ${reasoningHtml}
+          <div class="whitespace-pre-wrap">${formatTextWithLinks(text)}</div>
+        </div>
+      `;
+      box.appendChild(row);
+      scrollToBottom();
+    }
+
+    function sendQuickPrompt(text) {
+      toggleChat(true);
+      document.getElementById('chatInput').value = text;
       handleChatSubmit(new Event('submit'));
     }
 
-    async function handleChatSubmit(e) {
-      if (e) e.preventDefault();
-      if (isWaitingForResponse) return;
+    function askAboutProject(promptText) {
+      sendQuickPrompt(promptText);
+    }
+
+    async function handleChatSubmit(event) {
+      if (event) event.preventDefault();
+      if (isSending) return;
 
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message) return;
 
-      // 隱藏快捷問題按鈕
-      const quick = document.getElementById('quickQuestions');
-      if (quick) quick.remove();
+      const quickChips = document.getElementById('quickChips');
+      if (quickChips) quickChips.remove();
 
-      appendMessage('user', message);
+      appendUserMessage(message);
       input.value = '';
 
-      const gasUrl = getActiveGasUrl();
+      const gasUrl = getGasUrl();
       if (!gasUrl) {
-        appendMessage('bot', '⚠️ 尚未配置 Google Apps Script WebApp 網址！\n\n請先依照指南部署 GAS 後端，並點擊視窗右上角的 ⚙️ 齒輪圖示貼入您的 WebApp 網址（以 /exec 結尾），即可立即與 OpenRouter Claude 模型對話！');
+        appendBotMessage('⚠️ 尚未設定 GAS WebApp 網址！\n請點選視窗上方的「⚙️ 設定」按鈕，貼入您的 Google Apps Script 網址並儲存即可開始對話。');
+        document.getElementById('settingsPanel').classList.remove('hidden');
         return;
       }
 
-      // 顯示思考中動畫
-      isWaitingForResponse = true;
+      isSending = true;
       document.getElementById('typingIndicator').classList.remove('hidden');
       scrollToBottom();
 
       try {
-        // 重要：傳送 Content-Type: text/plain 以避免 Google Apps Script 的 CORS OPTIONS Preflight 阻擋
+        // 使用 text/plain 避免瀏覽器觸發 GAS 不支援的 CORS Preflight OPTIONS 請求
         const res = await fetch(gasUrl, {
           method: 'POST',
           headers: {
@@ -645,29 +875,38 @@
           },
           body: JSON.stringify({
             message: message,
-            history: chatHistory.slice(-6) // 取最近 6 則對話作為上下文
-          })
+            history: chatHistory.slice(-10)
+          }),
+          redirect: 'follow'
         });
 
         const data = await res.json();
         if (data.error) {
-          appendMessage('bot', '❌ 回覆失敗：' + data.error);
-        } else if (data.reply) {
-          appendMessage('bot', data.reply);
-          // 記錄歷史
+          appendBotMessage('❌ 後端錯誤：' + data.error);
+        } else if (data.reply !== undefined) {
+          appendBotMessage(data.reply, data.reasoning_details);
+
+          // 依照 OpenRouter Reasoning 規範，原封不動保留 reasoning_details 供後續對話使用
           chatHistory.push({ role: 'user', content: message });
-          chatHistory.push({ role: 'assistant', content: data.reply });
+          const assistantEntry = { role: 'assistant', content: data.reply };
+          if (data.reasoning_details !== undefined && data.reasoning_details !== null) {
+            assistantEntry.reasoning_details = data.reasoning_details;
+          }
+          chatHistory.push(assistantEntry);
         } else {
-          appendMessage('bot', '收到未預期的回應格式。');
+          appendBotMessage('⚠️ 收到未預期的回應格式，請檢查 GAS 程式碼是否為最新版本。');
         }
       } catch (err) {
-        appendMessage('bot', '連線至後端 GAS 發生錯誤：' + err.message + '\n請確認您的 GAS 部署權限是否設為「任何人 (Anyone)」！');
+        appendBotMessage('❌ 連線 GAS 失敗：' + err.message + '\n請確認：\n1. GAS 網址是否正確（以 /exec 結尾）\n2. 部署權限是否設為「所有人 (Anyone)」');
       } finally {
-        isWaitingForResponse = false;
+        isSending = false;
         document.getElementById('typingIndicator').classList.add('hidden');
         scrollToBottom();
       }
     }
+
+    // 初始化狀態指示燈
+    updateConnectionUI();
   </script>
 </body>
 </html>
